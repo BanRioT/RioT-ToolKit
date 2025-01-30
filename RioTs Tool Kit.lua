@@ -293,10 +293,152 @@ DiscordLib:Notification("VC Unban", "VC Unban has been executed please wait.", "
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Clipszz/Micup/refs/heads/main/mic%20up%20acks.txt"))()
 end)
 
+local Anti_fling = Utility_Scripts:Channel("Anti Fling")
+Anti_fling:Label("This script stops you from being flung by other players.")
+Anti_fling:Seperator()
+Anti_fling:Button("Execute Anti Fling", function()
+DiscordLib:Notification("Anti Fling", "Anti Fling has been executed please wait.", "Okay!")
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Linux6699/DaHubRevival/main/AntiFling.lua'))()
+end)
 
 local FE_Scripts = win:Server("FE Scripts", "")
 
-local FE = FE_Scripts:Channel("FE Information")
+local FE_information = FE_Scripts:Channel("FE Information")
 
-FE:Label("This section is still in development...")
-FE:Seperator()
+FE_information:Label("What is FE?, FE is a client side script any script that is\nFE CANNOT modify another players client.")
+FE_information:Label("All scripts in the section are all client side and only YOU can see the\ntools, items, etc nobody else.")
+
+
+
+local player = win:Server("Player", "")
+
+local player_modifications = player:Channel("Player Modifications")
+player_modifications:Label("Modify your player Speed, Toggle noclip, fly, etc")
+player_modifications:Seperator()
+local sldr = player_modifications:Slider("Movement Speed", 0, 150, 16, function(sliderValue)
+    -- Update the player's movement speed based on the slider value
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = sliderValue
+end)
+player_modifications:Seperator()
+local plr = game.Players.LocalPlayer
+local mouse = plr:GetMouse()
+local localplayer = plr
+local flying = false
+local torso = nil
+local speed = 10
+local keys = {a=false, d=false, w=false, s=false}
+local e1, e2
+local core
+
+local function startFly()
+    if flying then return end
+    flying = true
+    if workspace:FindFirstChild("Core") then
+        workspace.Core:Destroy()
+    end
+
+    core = Instance.new("Part")
+    core.Name = "Core"
+    core.Size = Vector3.new(0.05, 0.05, 0.05)
+    core.Parent = workspace
+    local weld = Instance.new("Weld", core)
+    weld.Part0 = core
+    weld.Part1 = localplayer.Character.LowerTorso
+    weld.C0 = CFrame.new(0, 0, 0)
+
+    torso = core
+
+    local pos = Instance.new("BodyPosition", torso)
+    local gyro = Instance.new("BodyGyro", torso)
+    pos.Name = "EPIXPOS"
+    pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+    pos.position = torso.Position
+    gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    gyro.cframe = torso.CFrame
+
+    repeat
+        wait()
+        localplayer.Character.Humanoid.PlatformStand = true
+        local new = gyro.cframe - gyro.cframe.p + pos.position
+        if not keys.w and not keys.s and not keys.a and not keys.d then
+            speed = 5
+        end
+        if keys.w then
+            new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+        end
+        if keys.s then
+            new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+        end
+        if keys.d then
+            new = new * CFrame.new(speed, 0, 0)
+        end
+        if keys.a then
+            new = new * CFrame.new(-speed, 0, 0)
+        end
+        if speed > 10 then
+            speed = 5
+        end
+        pos.position = new.p
+        if keys.w then
+            gyro.cframe = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad(speed * 0), 0, 0)
+        elseif keys.s then
+            gyro.cframe = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(math.rad(speed * 0), 0, 0)
+        else
+            gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+        end
+    until not flying
+    if gyro then gyro:Destroy() end
+    if pos then pos:Destroy() end
+    flying = false
+    localplayer.Character.Humanoid.PlatformStand = false
+    speed = 10
+end
+
+local function stopFly()
+    flying = false
+    if core then
+        core:Destroy()
+        core = nil
+    end
+end
+
+-- Connect the toggle to start/stop fly
+player_modifications:Toggle("Fly", false, function(bool)
+    if bool then
+        startFly()
+    else
+        stopFly()
+    end
+end)
+
+-- Key events to control movement while flying
+e1 = mouse.KeyDown:connect(function(key)
+    if not torso or not torso.Parent then 
+        flying = false 
+        e1:disconnect() 
+        e2:disconnect() 
+        return 
+    end
+    if key == "w" then
+        keys.w = true
+    elseif key == "s" then
+        keys.s = true
+    elseif key == "a" then
+        keys.a = true
+    elseif key == "d" then
+        keys.d = true
+    end
+end)
+
+e2 = mouse.KeyUp:connect(function(key)
+    if key == "w" then
+        keys.w = false
+    elseif key == "s" then
+        keys.s = false
+    elseif key == "a" then
+        keys.a = false
+    elseif key == "d" then
+        keys.d = false
+    end
+end)
+
