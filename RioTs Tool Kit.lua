@@ -20,7 +20,7 @@ UE:Label("Universal ESP gives you the ability to see players names, health,\ndis
 UE:Seperator()
 UE:Button("Execute Universal ESP", function()
 DiscordLib:Notification("Universal ESP", "Universal ESP has been executed please wait.", "Okay!")
-    pcall(function() loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua'))() end)
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Lucasfin000/SpaceHub/main/UESP'))()
 end)
 
 local DEX = Universal_Scripts:Channel("DEX Game Analyzer")
