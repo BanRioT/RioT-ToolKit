@@ -148,7 +148,7 @@ DiscordLib:Notification("Infinite Yield", "Infinite Yield has been executed plea
                 highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
                 highlight.FillColor = color
                 highlight.FillTransparency = 0.1  -- Adjust this value for more transparency
-                highlight.OutlineTransparency = 0.3  -- Optional: Adjust outline transparency
+                highlight.OutlineTransparency = 0.5  -- Optional: Adjust outline transparency
                 highlight.Parent = target.Character
             else
                 target.Character.GetReal.FillColor = color
