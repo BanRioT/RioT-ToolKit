@@ -11,6 +11,15 @@ IF:Label("Infinite Yield is a script that gives all things necessary to exploit\
 IF:Seperator()
 IF:Button("Execute Infinite Yield", function()
 DiscordLib:Notification("Infinite Yield", "Infinite Yield has been executed please wait.", "Okay!")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+
+local UE = Universal_Scripts:Channel("Universal ESP")
+
+UE:Label("Universal ESP gives you the ability to see players names, health,\ndistance and team through walls.")
+UE:Seperator()
+UE:Button("Execute Universal ESP", function()
+DiscordLib:Notification("Universal ESP", "Universal ESP has been executed please wait.", "Okay!")
     _G.FriendColor = Color3.fromRGB(0, 0, 255)
     _G.EnemyColor = Color3.fromRGB(255, 0, 0)
     _G.UseTeamColor = true
@@ -164,15 +173,6 @@ DiscordLib:Notification("Infinite Yield", "Infinite Yield has been executed plea
             end
         end
     end
-end)
-
-local UE = Universal_Scripts:Channel("Universal ESP")
-
-UE:Label("Universal ESP gives you the ability to see players names, health,\ndistance and team through walls.")
-UE:Seperator()
-UE:Button("Execute Universal ESP", function()
-DiscordLib:Notification("Universal ESP", "Universal ESP has been executed please wait.", "Okay!")
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/Lucasfin000/SpaceHub/main/UESP'))()
 end)
 
 local DEX = Universal_Scripts:Channel("DEX Game Analyzer")
